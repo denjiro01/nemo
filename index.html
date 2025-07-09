@@ -7,7 +7,6 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap');
 
-  /* Grund-Reset */
   * {
     box-sizing: border-box;
   }
@@ -26,10 +25,8 @@
     font-weight: 700;
     color: #00fff7;
     margin: 1rem 0 0.5rem 0;
-    /* Kein Glow-Effekt hier */
   }
 
-  /* Container */
   .chat-container {
     background: #111122;
     border-radius: 16px;
@@ -38,11 +35,9 @@
     height: 75vh;
     display: flex;
     flex-direction: column;
-    box-shadow:
-      0 0 20px #00fff7aa;
+    box-shadow: 0 0 20px #00fff7aa;
   }
 
-  /* Chatverlauf Bereich */
   .chat-messages {
     flex: 1;
     overflow-y: auto;
@@ -61,7 +56,6 @@
     border-radius: 10px;
   }
 
-  /* Nachrichtenbubbles */
   .message {
     max-width: 75%;
     padding: 1rem 1.2rem;
@@ -69,8 +63,7 @@
     font-size: 1rem;
     line-height: 1.3;
     position: relative;
-    box-shadow:
-      0 0 6px #00fff7aa;
+    box-shadow: 0 0 6px #00fff7aa;
     animation: fadeIn 0.5s ease forwards;
   }
   .message.user {
@@ -88,7 +81,6 @@
     text-shadow: 0 0 2px #aaffffaa;
   }
 
-  /* Ladeanimation */
   .loading {
     width: 24px;
     height: 24px;
@@ -99,7 +91,6 @@
     margin-left: 10px;
   }
 
-  /* Eingabebereich */
   .input-area {
     display: flex;
     padding: 1rem 1.5rem;
@@ -137,15 +128,13 @@
     font-weight: 700;
     color: #001122;
     cursor: pointer;
-    box-shadow:
-      0 0 15px #00fff7;
+    box-shadow: 0 0 15px #00fff7;
     transition: background 0.3s ease;
   }
   button:hover {
     background: #00c4c1;
   }
 
-  /* Animationen */
   @keyframes spin {
     to { transform: rotate(360deg);}
   }
@@ -178,7 +167,7 @@
     const loadingDiv = document.createElement('div');
     loadingDiv.classList.add('message', 'bot');
     loadingDiv.id = 'loading';
-    loadingDiv.innerHTML = 'Nemo tippt<span class=\"loading\"></span>';
+    loadingDiv.innerHTML = 'Nemo tippt<span class="loading"></span>';
     chatMessages.appendChild(loadingDiv);
     scrollToBottom();
   }
@@ -199,28 +188,25 @@
 
     showLoading();
 
-    const apiKey = "sk-1e20e4b7bde748429d142b8dfb5f0cd1"; // API-Key einfügen
     try {
-      const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "deepseek-chat",
-          messages: [
-            { role: "system", content: "Du bist ein hilfreicher, freundlicher deutscher Assistent." },
-            { role: "user", content: text }
-          ],
-        }),
-      });
+   const response = await fetch("/api/chat", {  // <-- eigene API-Route anstelle von DeepSeek direkt
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    model: "deepseek-chat",
+    messages: [
+      { role: "system", content: "Du bist ein hilfreicher, freundlicher deutscher Assistent." },
+      { role: "user", content: text }
+    ],
+  }),
+});
+
+
       if (!response.ok) throw new Error(`Fehler: ${response.status} ${response.statusText}`);
       const data = await response.json();
 
       removeLoading();
 
-      // Bot Antwort anzeigen
       const botMsg = document.createElement('div');
       botMsg.classList.add('message', 'bot');
       botMsg.textContent = data.choices[0].message.content;
@@ -237,7 +223,6 @@
     }
   }
 
-  // Enter-Taste sendet, Shift+Enter Zeilenumbruch
   sendBtn.addEventListener('click', () => {
     frageDeepSeek(userInput.value);
     userInput.value = '';
@@ -252,4 +237,3 @@
 </script>
 </body>
 </html>
-
