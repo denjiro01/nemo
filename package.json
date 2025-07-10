@@ -1,5 +1,5 @@
 {
-  "name": "nemo-deepseek-chat",
+  "name": "nemo",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev"
