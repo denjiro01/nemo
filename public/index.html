@@ -189,7 +189,7 @@
     showLoading();
 
     try {
-   const response = await fetch("https://nemo-l7u1-ajaxhpml3.vercel.app/api/chat", {  // <-- eigene API-Route anstelle von DeepSeek direkt
+   const response = await fetch("https://nemo.vercel.app/api/chat", {  // <-- eigene API-Route anstelle von DeepSeek direkt
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
